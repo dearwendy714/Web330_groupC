@@ -1,69 +1,72 @@
+  
 <!DOCTYPE html>
-<html>
-<head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Quiz</title>
-	<link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="css/base.css">
-	<link rel="stylesheet" href="css/flexbox.css">
-</head>
-<body>
-	
-	<header class="main-header">
-		<h1 class="name"><a href="https://github.com/KurtLeadley/HTML-Assassins/blob/master/site/index.html">Quiz</a></h1>
-	</header><!--/.main-header-->  
-	<body>
-
-	<div class="banner">
-		<img class="icon" src="img/JS_icon.png" alt="JavaScript">
-		<h1 class="headline">Test Your JS Knowledge</h1>
-		<span class="tagline">JavaScript web quiz created by HTML Assassins</span>
-	</div><!--/.banner-->
-	
-	<div class="row">		
-		<div class="primary col">
-
-		<div class="container">
-				<div class="item-1 item">Question #1</div>
-				<div class="item-2 item">Question #2</div>
-				<div class="item-3 item">Question #3</div>
-				<div class="item-4 item">Question #4</div>
-				<div class="item-5 item">Question #5</div>
-				<div class="item-6 item">Question #6</div>
-				<div class="item-7 item">Question #7</div>
-				<div class="item-8 item">Question #8</div>
-				<div class="item-9 item">Question #9</div>
-				<div class="item-10 item">Question #10</div>
-				<div class="item-11 item">Question #11</div>
-				<div class="item-12 item">Question #12</div>
-			</div>
-			<h2>Yay! You're Done!</h2>
-			<p>Here is your results from your quiz!</p>
-			
-			<div class="contain">
-					<div class="item-1 item">Item 1</div>
-					<div class="item-2 item">Item 2</div>
-					<div class="item-3 item">Item 3</div>
-					<div class="item-4 item">Item 4</div>
-					<div class="item-5 item">Item 5</div>
-					<div class="item-6 item">Item 6</div>
-					<div class="item-7 item">Item 7</div>
-					<div class="item-8 item">Item 8</div>
-					<div class="item-9 item">Item 9</div>
-					<div class="item-10 item">Item 10</div>
-					<div class="item-11 item">Item 11</div>
-					<div class="item-12 item">Item 12</div>
-				</div>
-		</div><!--/.primary-->
-	</div>
-	
-	</body>
-	
-	<footer class="main-footer">
-		<div class="footer-inner">
-			<span>&copy;2019 Web-330-Group-C Kurt Leadley, Wendy Portillo, Karie Funk.</span>
-		</div>
-	</footer>
-	
-</body>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <meta name="author" content="Kurt Leadley, Karie Funk, Wendy Portillo">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>JS Quiz</title>
+        <!-- JavaScript Libraries -->
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
+        <script src="js/knockout-3.5.0.js"></script>
+        <script src="js/JavaScriptWebQuiz.js"></script>
+        <!-- Stylesheet - Bootstrap -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+            integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+        <!-- bootstrap overrides -->
+        <link rel="stylesheet" href="styles/style.css" />
+    </head>
+    <body>
+        <header id='top'>
+            <h1>Test Your JS Knowledge</h1>
+        </header>
+        <main>
+            <p id="intro"><i>JavaScript web quiz created by the HTML Assassins</i></p>
+            <!-- https://knockoutjs.com/documentation/with-binding.html -->
+            <section class='questions-container'>
+                <section class='question-container' data-bind="with: currentQuestion"> <!--data-bind="attr: { id: id }"-->
+                    <div class='question'><h3># <span data-bind="text: $parent.currentQuestionIndexDisplayValue"></span>: <span data-bind="text: text"></span></h3></div>
+                    <!-- ko foreach: choices -->
+                    <div class='answer' data-bind="click: $parent.selectAnswer"><p data-bind="text: text"></p></div>
+                    <!-- /ko -->
+                    
+                    <div class='question-result'>
+                        <span data-bind="visible: isWrong">Wrong!</span>
+                        <span data-bind="visible: isCorrect">Correct!</span>
+                    </div>
+                </section>
+            </section>
+            <section class='buttons'>
+                <button id='restart' type="button" data-bind="click: restart">Restart</button>
+                <!-- https://knockoutjs.com/documentation/enable-binding.html -->
+                <button id='submit' type="button" data-bind="click: submit, enabled: canSubmit">Submit</button>
+            </section>
+       
+            <section id='results-container'>
+                <h3>Yay! You're Done!</h3>
+                <p><i>Here are the results from your quiz:</i></p>
+                <h3 id="results-score">5 out of 10</h3>
+                <h1 id="results-score-percentage">50%</h1>
+            </section>
+  
+            <p class='white'><i>Use the following tabs to go back and change your answer / view correct answers after submission</i></p>
+            <!--https://knockoutjs.com/documentation/foreach-binding.html-->
+            <section class='q-tabs-container' data-bind="foreach: questions">
+                <!-- https://knockoutjs.com/documentation/attr-binding.html -->
+                <!-- https://stackoverflow.com/questions/12508404/setting-the-id-attribute-with-knockoutjs-including-a-prefix -->
+                <div class='q-tab' data-bind="attr: { id: 'q-tab-' + $index() }, click: function() { $root.selectQuestion($index()); }">
+                    <p data-bind="text: 'Question ' + ($index() + 1)"></p>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <h3>&copy;2019 Web-330-Group-C: Kurt Leadley, Wendy Portillo, Karie Funk.</h3>
+            <a href='#top'>Back to top</a>
+        </footer>
+        <script>
+            var quizViewModel = new QuizViewModel();
+            ko.applyBindings(quizViewModel);
+        </script>
+    </body>
 </html>
